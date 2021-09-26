@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./TinderCards.css";
 import TinderCard from "react-tinder-card"
-import { SwipeableDrawer } from '@mui/material';
+import axios from './axios';
+
 
 
 function TinderCards() {
 
-	const [people, setPeople] = useState([{
-		name: 'Elon Mask',
-		url: "https://c7.alamy.com/comp/2DENTY5/berlin-germany-01st-dec-2020-elon-musk-head-of-the-space-company-spacex-and-tesla-ceo-comes-to-the-axel-springer-award-ceremony-musk-will-accept-this-years-axel-springer-award-credit-britta-pedersendpa-zentralbilddpa-pooldpaalamy-live-news-2DENTY5.jpg"
-	},
-	{
-		name: 'Sachira Dilthushka',
-		url: "https://c7.alamy.com/comp/2DENTY5/berlin-germany-01st-dec-2020-elon-musk-head-of-the-space-company-spacex-and-tesla-ceo-comes-to-the-axel-springer-award-ceremony-musk-will-accept-this-years-axel-springer-award-credit-britta-pedersendpa-zentralbilddpa-pooldpaalamy-live-news-2DENTY5.jpg"
-	},
-	{
-		name: 'Sachira Dilthushka',
-		url: "https://c7.alamy.com/comp/2DENTY5/berlin-germany-01st-dec-2020-elon-musk-head-of-the-space-company-spacex-and-tesla-ceo-comes-to-the-axel-springer-award-ceremony-musk-will-accept-this-years-axel-springer-award-credit-britta-pedersendpa-zentralbilddpa-pooldpaalamy-live-news-2DENTY5.jpg"
-	}
-	]);
+	const [people, setPeople] = useState([]);
+
+	useEffect(() => {
+		async function fetchData(){
+			const req = await axios.get("/tinder/cards");
+			setPeople(req.data);
+		}
+
+		fetchData();
+		
+	}, []);
 
 	const swiped = (direction, nameToDelete) => {
 		console.log("removing : " + nameToDelete);
@@ -42,7 +41,7 @@ function TinderCards() {
 						onCardLeftScreen={() => outOfFrame(person.name)}
 					>
 
-						<div style={{ backgroundImage: `url(${person.url})` }}
+						<div style={{ backgroundImage: `url(${person.imgUrl})` }}
 							className="card"
 						>
 							<h3>{person.name}</h3>
